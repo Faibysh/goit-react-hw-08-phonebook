@@ -9,7 +9,7 @@ function Filter() {
 
   useEffect(() => {
     dispatch(setFilter(value));
-  }, [value]);
+  }, [dispatch, value]);
 
   return (
     <div className={styles.form}>
