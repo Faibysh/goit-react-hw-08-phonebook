@@ -1,4 +1,5 @@
-@import-normalize; /* bring in normalize.css styles */
+@import-normalize;
+/* bring in normalize.css styles */
 
 body {
   margin: 0;
@@ -12,4 +13,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+html {
+  background-image: linear-gradient(114.99deg, #171717 -0.99%, #a39292 54.28%, #2d2828 78.99%);
+  width: 100%;
+  height: 100%;
 }

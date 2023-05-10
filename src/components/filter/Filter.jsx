@@ -1,30 +1,35 @@
-import { useDispatch } from 'react-redux';
-import styles from './Filter.module.css';
-import { useEffect, useState } from 'react';
-import { setFilter } from 'store/filterSlice/filterSlice';
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
+import TextField from '@mui/material/TextField';
+import { addFilter } from 'store/filterSlice/filterSlice';
 
-function Filter() {
-  const [value, setValue] = useState('');
+export const Filter = () => {
+  const filter = useSelector(state => state.filter);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(setFilter(value));
-  }, [dispatch, value]);
+  const filterChange = e => {
+    dispatch(addFilter(e.currentTarget.value));
+  };
 
   return (
-    <div className={styles.form}>
-      <label className={styles.label} htmlFor="filter">
-        Find contacts by name:
-      </label>
-      <input
-        className={styles.input}
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <TextField
+        autoComplete="off"
+        label="Find contacts by name"
+        variant="outlined"
         type="text"
-        id="filter"
-        value={value}
-        onChange={e => setValue(e.target.value)}
+        value={filter}
+        onChange={filterChange}
+        sx={{
+          mt: 2,
+          mb: 2,
+          width: 300,
+        }}
       />
     </div>
   );
-}
+};
 
-export default Filter;
+Filter.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+};

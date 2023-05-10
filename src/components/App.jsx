@@ -1,16 +1,49 @@
-import ContactForm from './contactform/ContactForm';
-import ContactList from './contactlist/ContactList';
-import Filter from './filter/Filter';
-import styles from './App.module.css';
+import { useEffect, lazy } from 'react';
+import { useDispatch } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
+import PrivateRoute from '../components/PrivateRoute';
+import PublicRoute from '../components/PublicRoute';
+import SharedLayout from './markup/Markup';
+import operations from 'store/auth/auth-operations';
+import Login from './pages/Login';
+const Home = lazy(() => import('./pages/Home'));
+const Contacts = lazy(() => import('./pages/Contacts'));
+const Register = lazy(() => import('./pages/Register'));
+const NotFound = lazy(() => import('./pages/404'));
 
-export function App() {
+export const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(operations.fetchCurrentUser());
+  }, [dispatch]);
+
   return (
-    <div className={styles.app}>
-      <h1 className={styles.title}>Phonebook</h1>
-      <ContactForm />
-      <h2 className={styles.title}>Contacts</h2>
-      <Filter />
-      <ContactList />
+    <div>
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route index element={<Home />} />
+          <Route
+            path="/register"
+            element={
+              <PublicRoute redirectTo="/contacts" component={<Register />} />
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PublicRoute redirectTo="/contacts" component={<Login />} />
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute redirectTo="/login" component={<Contacts />} />
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
     </div>
   );
-}
+};
